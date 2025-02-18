@@ -1,0 +1,23 @@
+# Active le moteur de réécriture d'URL
+RewriteEngine On
+
+# Redirige les requêtes sans .html vers le fichier correspondant .html
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^/.]+)$ $1.html [L]
+
+# Supprime l'affichage de .html dans l'URL
+RewriteCond %{THE_REQUEST} \s/([^/]+)\.html [NC]
+RewriteRule ^([^/]+)\.html$ /$1 [R=301,L]
+
+# Forcer l'accès aux fichiers et répertoires
+<FilesMatch "^.*$">
+    Require all granted
+</FilesMatch>
+
+# Redirige les erreurs 404 vers une page d'erreur personnalisée
+ErrorDocument 404 /404.html
+
+# Permet le téléchargement de fichiers .css, .js et .jpg
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif)$">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
